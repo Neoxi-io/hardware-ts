@@ -2,7 +2,7 @@
   "name": "@neoxi-io/hardware-ts",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "publishConfig": {
     "@neoxi-io:registry": "https://npm.pkg.github.com"
   },
