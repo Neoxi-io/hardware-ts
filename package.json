@@ -1,0 +1,33 @@
+{
+  "name": "@neoxi-io/hardware-ts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Neoxi-io/hardware-ts.git"
+  },
+  "author": "Neoxi-io",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Neoxi-io/hardware-ts/issues"
+  },
+  "homepage": "https://github.com/Neoxi-io/hardware-ts#readme",
+  "devDependencies": {
+    "@types/debug": "^4.1.12",
+    "@types/i2c-bus": "^5.1.2",
+    "@types/node": "^20.14.11",
+    "@types/polycrc": "^0.1.2",
+    "@types/sleep": "^0.0.12",
+    "tsc": "^2.0.4",
+    "typescript": "^5.5.3"
+  },
+  "dependencies": {
+    "debug": "^4.3.5",
+    "i2c-bus": "^5.2.3",
+    "perf_hooks": "^0.0.1"
+  }
+}
