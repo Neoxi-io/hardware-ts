@@ -1,0 +1,75 @@
+name: Hardware Typescript Package
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: environment-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install --force
+
+      - name: Install dev dependencies
+        run: npm install --only=dev --force
+
+      - name: Build app
+        run: npm run build
+
+      - name: Semantic Release
+        id: semantic_release
+        uses: cycjimmy/semantic-release-action@v3
+        with:
+          semantic_version: 19.0.5
+          branches: main
+          branch: main
+          ci: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # if semantic release returns no new version, set the output to the last tag, otherwise use the new version, and print it
+      - name: Version
+        id: generate_version
+        run: |
+          if [ -z "${{ steps.semantic_release.outputs.new_version }}" ]; then
+              echo "No new version, using last tag: $(git describe --abbrev=0 --tags)"
+              echo "::set-output name=version::$(git describe --abbrev=0 --tags)"
+          else
+              echo "New version: ${{ steps.semantic_release.outputs.new_release_version }}"
+              echo "::set-output name=version::${{ steps.semantic_release.outputs.new_release_version }}"
+          fi
+
+  publish-gpr:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
