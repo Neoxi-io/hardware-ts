@@ -63,6 +63,7 @@
   "dependencies": {
     "debug": "^4.3.5",
     "i2c-bus": "^5.2.3",
+    "onoff": "^6.0.3",
     "perf_hooks": "^0.0.1"
   }
 }

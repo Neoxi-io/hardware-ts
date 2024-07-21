@@ -54,6 +54,14 @@ debug@^4.3.5:
   dependencies:
     ms "2.1.2"
 
+epoll@^4.0.1:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/epoll/-/epoll-4.0.2.tgz#08478c21501da95e3a066b89df313763bb6aace9"
+  integrity sha512-4KtBBSBYAfyta2/4TIFT4P7pZdDjU6UPvdzWcF4Fy6Q300V08Wdj/82ovAZBUDra6TTjsKsfy12Qxuwc3ob+Qw==
+  dependencies:
+    bindings "^1.5.0"
+    nan "^2.17.0"
+
 file-uri-to-path@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/file-uri-to-path/-/file-uri-to-path-1.0.0.tgz#553a7b8446ff6f684359c445f1e37a05dacc33dd"
@@ -67,6 +75,11 @@ i2c-bus@^5.2.3:
     bindings "^1.5.0"
     nan "^2.17.0"
 
+lodash.debounce@^4.0.8:
+  version "4.0.8"
+  resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
+  integrity sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==
+
 ms@2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.2.tgz#d09d1f357b443f493382a8eb3ccd183872ae6009"
@@ -77,15 +90,18 @@ nan@^2.17.0:
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.20.0.tgz#08c5ea813dd54ed16e5bd6505bf42af4f7838ca3"
   integrity sha512-bk3gXBZDGILuuo/6sKtr0DQmSThYHLtNCdSdXk9YkxD/jK6X2vmCyyXBBxyqZ4XcnzTyYEAThfX3DCEnLf6igw==
 
+onoff@^6.0.3:
+  version "6.0.3"
+  resolved "https://registry.yarnpkg.com/onoff/-/onoff-6.0.3.tgz#b8e41aec363bebbb3d76e47d74b8ae9cea8d4280"
+  integrity sha512-xtVlwRDzswYM69bzzIui/qzu7QHsFnjsQiCV1iYVA/HXt5xdc9utc97SYAlXzK8wAhIN7+H7MaVqh2vpfdKk9A==
+  dependencies:
+    epoll "^4.0.1"
+    lodash.debounce "^4.0.8"
+
 perf_hooks@^0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/perf_hooks/-/perf_hooks-0.0.1.tgz#253e7e18b71fcc0390fd3afb2cd7cf1685df040c"
   integrity sha512-qG/D9iA4KDme+KF4vCObJy6Bouu3BlQnmJ8jPydVPm32NJBD9ZK1ZNgXSYaZKHkVC1sKSqUiLgFvAZPUiIEnBw==
-
-tsc@^2.0.4:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/tsc/-/tsc-2.0.4.tgz#5f6499146abea5dca4420b451fa4f2f9345238f5"
-  integrity sha512-fzoSieZI5KKJVBYGvwbVZs/J5za84f2lSTLPYf6AGiIf43tZ3GNrI1QzTLcjtyDDP4aLxd46RTZq1nQxe7+k5Q==
 
 typescript@^5.5.3:
   version "5.5.3"
