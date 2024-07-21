@@ -58,7 +58,6 @@
     "@types/node": "^20.14.11",
     "@types/polycrc": "^0.1.2",
     "@types/sleep": "^0.0.12",
-    "tsc": "^2.0.4",
     "typescript": "^5.5.3"
   },
   "dependencies": {
