@@ -21,6 +21,8 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@neoxi-io'
 
       - name: Install dependencies
         run: npm install --force
@@ -52,25 +54,7 @@ jobs:
           else
               echo "New version: ${{ steps.semantic_release.outputs.new_release_version }}"
               echo "::set-output name=version::${{ steps.semantic_release.outputs.new_release_version }}"
-          fi
-
-  publish-gpr:
-    needs: build
-    runs-on: ubuntu-latest
-    permissions:
-      packages: write
-      contents: read
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '20'
-          cache: 'npm'
-          registry-url: 'https://npm.pkg.github.com'
-          scope: '@neoxi-io'
+          fi'
 
       - run: npm publish
         env:
