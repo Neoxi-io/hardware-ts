@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/Neoxi-io/hardware-ts/compare/v1.0.0...v1.0.1) (2024-08-06)
+
+
+### Bug Fixes
+
+* trigger ([ffbe41b](https://github.com/Neoxi-io/hardware-ts/commit/ffbe41bdaac8ef5d4d176c750379c54772aa7f29))
+
 # 1.0.0 (2024-08-06)
 
 
