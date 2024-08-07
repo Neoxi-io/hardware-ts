@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/Neoxi-io/hardware-ts/compare/v1.0.2...v1.1.0) (2024-08-07)
+
+
+### Features
+
+* added ads classes ([ff4f4f2](https://github.com/Neoxi-io/hardware-ts/commit/ff4f4f26864c2d193a778a15a30e682d1974f71e))
+
 ## [1.0.2](https://github.com/Neoxi-io/hardware-ts/compare/v1.0.1...v1.0.2) (2024-08-06)
 
 
