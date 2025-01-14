@@ -25,3 +25,10 @@
 ### Bug Fixes
 
 * ts config ([62d7a8f](https://github.com/Neoxi-io/hardware-ts/commit/62d7a8fcc50f8015ffb2e226bda7bd42f3184695))
+
+# [1.2.0](https://github.com/Neoxi-io/hardware-ts/compare/v1.1.0...v1.2.0) (2024-08-08)
+
+
+### Features
+
+* added AS5600 sensor ([commit-hash-placeholder](https://github.com/Neoxi-io/hardware-ts/commit/commit-hash-placeholder))
