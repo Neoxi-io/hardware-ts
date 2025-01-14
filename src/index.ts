@@ -3,6 +3,7 @@ export * as MCP23017 from './boards/mcp23017'
 export * as PCA9685 from './boards/pca9685'
 export * as RelayModule from './boards/relayModule'
 export * as TCA9548A from './boards/tca9548a'
+export * as AS5600 from './boards/as5600'
 
 export * as SGP30 from './sensors/sgp30'
 export * as SHT4X from './sensors/sht4x'
