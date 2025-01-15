@@ -115,7 +115,7 @@ class VL53L1X extends EventEmitter {
     this.debug('interval(%s, %s)', dwell, sleep)
     if (!this.dwell_times.includes(dwell)) throw new Error("Argument 'dwell' must be one of: " + this.dwell_times)
     await st_uld.VL53L1X_SetTimingBudgetInMs(this.dev, dwell)
-    await st_uld.VL53L1X_SetInterMeasurementInMs(this.dev, dwell + sleep)
+    await st_uld.VL53L1X_SetInterMeasurementInMs(this.dev, dwell + (sleep ?? 1))
   }
 
   public async roi(width: number, height: number, center: number = 199): Promise<void> {
