@@ -1,8 +1,8 @@
 import { EventEmitter } from 'events'
-import { i2c } from '../utils/ST_ULD/i2c'
-import { constants as REG } from '../utils/ST_ULD/define'
-import * as st_uld from '../utils/ST_ULD/VL53L1X_api'
-import * as st_uld_calibration from '../utils/ST_ULD/VL53L1X_calibration'
+import { i2c } from './utils/ST_ULD/i2c'
+import { constants as REG } from './utils/ST_ULD/define'
+import * as st_uld from './utils/ST_ULD/VL53L1X_api'
+import * as st_uld_calibration from './utils/ST_ULD/VL53L1X_calibration'
 import debugFactory from 'debug'
 
 type BusType = any
