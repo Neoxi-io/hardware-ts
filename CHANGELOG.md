@@ -1,3 +1,15 @@
+# [1.2.0](https://github.com/Neoxi-io/hardware-ts/compare/v1.1.0...v1.2.0) (2025-01-15)
+
+
+### Bug Fixes
+
+* **Various:** fixed some errors ([dfe762c](https://github.com/Neoxi-io/hardware-ts/commit/dfe762c627cd90645ae58e9d42499fc917891d97))
+
+
+### Features
+
+* **Structure:** changed some elements of the structure ([a4fdd49](https://github.com/Neoxi-io/hardware-ts/commit/a4fdd4933afcb624810c6dedfb9fc9c9855fe2f5))
+
 # [1.1.0](https://github.com/Neoxi-io/hardware-ts/compare/v1.0.2...v1.1.0) (2024-08-07)
 
 
