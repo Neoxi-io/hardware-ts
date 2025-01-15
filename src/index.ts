@@ -4,6 +4,8 @@ export * as PCA9685 from './boards/pca9685'
 export * as RelayModule from './boards/relayModule'
 export * as TCA9548A from './boards/tca9548a'
 export * as AS5600 from './boards/as5600'
+export * as A4988 from './boards/a4988'
+export * as DRV8825 from './boards/drv8825'
 
 export * as SGP30 from './sensors/sgp30'
 export * as SHT4X from './sensors/sht4x'

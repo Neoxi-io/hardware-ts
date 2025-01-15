@@ -44,3 +44,91 @@ main().catch(console.error)
 - `readAngle()`: Reads the processed angle value from the sensor.
 - `readMagnetStatus()`: Reads the magnet status from the sensor.
 - `readMagnitude()`: Reads the magnitude value from the sensor.
+
+## A4988 Stepper Motor Driver
+
+The A4988 is a microstepping driver for controlling bipolar stepper motors. It is designed to operate bipolar stepper motors in full, half, quarter, eighth, and sixteenth step modes.
+
+### Usage
+
+To use the A4988 stepper motor driver, you need to create an instance of the `A4988` class and call its methods to control the motor.
+
+#### Example
+
+```typescript
+import { A4988 } from '@neoxi-io/hardware-ts'
+import { MCP23017 } from '@neoxi-io/hardware-ts'
+import PCA9685 from '@neoxi-io/hardware-ts'
+import { openPromisified } from 'i2c-bus'
+
+async function main() {
+  const bus = await openPromisified(1)
+  const gpio = new MCP23017(bus, 0x20)
+  const pwm = new PCA9685(50, 1.0, 0x40, bus)
+
+  const stepper = new A4988(gpio, pwm, 0, 1, 2)
+
+  await stepper.setDirection(true)
+  await stepper.enable()
+
+  for (let i = 0; i < 200; i++) {
+    await stepper.setStep(true)
+    await stepper.setStep(false)
+  }
+
+  await stepper.disable()
+}
+
+main().catch(console.error)
+```
+
+### Methods
+
+- `setStep(step: boolean)`: Controls the step signal of the stepper motor.
+- `setDirection(direction: boolean)`: Controls the direction signal of the stepper motor.
+- `enable()`: Enables the stepper motor.
+- `disable()`: Disables the stepper motor.
+
+## DRV8825 Stepper Motor Driver
+
+The DRV8825 is a microstepping driver for controlling bipolar stepper motors. It is designed to operate bipolar stepper motors in full, half, quarter, eighth, sixteenth, and thirty-second step modes.
+
+### Usage
+
+To use the DRV8825 stepper motor driver, you need to create an instance of the `DRV8825` class and call its methods to control the motor.
+
+#### Example
+
+```typescript
+import { DRV8825 } from '@neoxi-io/hardware-ts'
+import { MCP23017 } from '@neoxi-io/hardware-ts'
+import PCA9685 from '@neoxi-io/hardware-ts'
+import { openPromisified } from 'i2c-bus'
+
+async function main() {
+  const bus = await openPromisified(1)
+  const gpio = new MCP23017(bus, 0x20)
+  const pwm = new PCA9685(50, 1.0, 0x40, bus)
+
+  const stepper = new DRV8825(gpio, pwm, 0, 1, 2)
+
+  await stepper.setDirection(true)
+  await stepper.enable()
+
+  for (let i = 0; i < 200; i++) {
+    await stepper.setStep(true)
+    await stepper.setStep(false)
+  }
+
+  await stepper.disable()
+}
+
+main().catch(console.error)
+```
+
+### Methods
+
+- `setStep(step: boolean)`: Controls the step signal of the stepper motor.
+- `setDirection(direction: boolean)`: Controls the direction signal of the stepper motor.
+- `enable()`: Enables the stepper motor.
+- `disable()`: Disables the stepper motor.
