@@ -1,12 +1,12 @@
 import { I2CBus } from 'i2c-bus'
 import debugFactory from 'debug'
 import { MCP23017 } from './mcp23017'
-import { IOExpander } from '../utils/ioExpander'
+import { IOExpander } from './utils/ioExpander'
 
 interface Status {
-  detected: boolean;
-  tooLow: boolean;
-  tooHigh: boolean;
+  detected: boolean
+  tooLow: boolean
+  tooHigh: boolean
 }
 
 export class AS5600 {
@@ -31,7 +31,7 @@ export class AS5600 {
 
   async readRawAngle(): Promise<number> {
     const buffer = Buffer.alloc(2)
-    await this.bus.readI2cBlockSync(this.address, 0x0C, 2, buffer)
+    await this.bus.readI2cBlockSync(this.address, 0x0c, 2, buffer)
     const rawAngle = (buffer[0] << 8) | buffer[1]
     this.debug('Read raw angle: %d', rawAngle)
     return rawAngle
@@ -39,22 +39,22 @@ export class AS5600 {
 
   async readAngle(): Promise<number> {
     const buffer = Buffer.alloc(2)
-    await this.bus.readI2cBlockSync(this.address, 0x0E, 2, buffer)
+    await this.bus.readI2cBlockSync(this.address, 0x0e, 2, buffer)
     const angle = (buffer[0] << 8) | buffer[1]
     this.debug('Read angle: %d', angle)
     return angle
   }
 
   public async getStatus(): Promise<Status> {
-    const rstat = await this.getRawStatus();
-    const mh = (rstat >> 3) & 1;
-    const ml = (rstat >> 4) & 1;
-    const md = (rstat >> 5) & 1;
+    const rstat = await this.getRawStatus()
+    const mh = (rstat >> 3) & 1
+    const ml = (rstat >> 4) & 1
+    const md = (rstat >> 5) & 1
     return {
-        detected: Boolean(md),
-        tooLow: Boolean(ml),
-        tooHigh: Boolean(mh),
-    };
+      detected: Boolean(md),
+      tooLow: Boolean(ml),
+      tooHigh: Boolean(mh),
+    }
   }
 
   public async changeDirectionPin(pin: IOExpander.PinNumber16, direction: boolean): Promise<void> {
@@ -64,7 +64,7 @@ export class AS5600 {
 
   private async getRawStatus(): Promise<number> {
     const buffer = Buffer.alloc(1)
-    await this.bus.readI2cBlockSync(this.address, 0x0B, 1, buffer)
+    await this.bus.readI2cBlockSync(this.address, 0x0b, 1, buffer)
     return buffer[0]
   }
 }

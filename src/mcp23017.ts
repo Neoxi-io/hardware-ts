@@ -8,7 +8,7 @@
  */
 import { I2CBus } from 'i2c-bus'
 
-import { IOExpander } from '../utils/ioExpander'
+import { IOExpander } from './utils/ioExpander'
 
 import debugFactory from 'debug'
 

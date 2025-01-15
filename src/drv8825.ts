@@ -1,6 +1,6 @@
 import { MCP23017 } from './mcp23017'
 import PCA9685 from './pca9685'
-import { IOExpander } from '../utils/ioExpander'
+import { IOExpander } from './utils/ioExpander'
 
 export class DRV8825 {
   private gpio: MCP23017

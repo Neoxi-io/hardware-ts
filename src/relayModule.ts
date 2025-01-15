@@ -1,6 +1,6 @@
 import debugFactory from 'debug'
 import { MCP23017 } from './mcp23017'
-import { IOExpander } from '../utils/ioExpander'
+import { IOExpander } from './utils/ioExpander'
 
 export enum RelayConfig {
   NO = 'NO',
