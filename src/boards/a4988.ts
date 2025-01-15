@@ -1,14 +1,15 @@
 import { MCP23017 } from './mcp23017'
 import PCA9685 from './pca9685'
+import { IOExpander } from '../utils/ioExpander'
 
 export class A4988 {
   private gpio: MCP23017
   private pwm: PCA9685
-  private stepPin: number
-  private dirPin: number
-  private enablePin: number
+  private stepPin: IOExpander.PinNumber16
+  private dirPin: IOExpander.PinNumber16
+  private enablePin: IOExpander.PinNumber16
 
-  constructor(gpio: MCP23017, pwm: PCA9685, stepPin: number, dirPin: number, enablePin: number) {
+  constructor(gpio: MCP23017, pwm: PCA9685, stepPin: IOExpander.PinNumber16, dirPin: IOExpander.PinNumber16, enablePin: IOExpander.PinNumber16) {
     this.gpio = gpio
     this.pwm = pwm
     this.stepPin = stepPin

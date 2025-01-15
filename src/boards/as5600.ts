@@ -1,6 +1,7 @@
 import { I2CBus } from 'i2c-bus'
 import debugFactory from 'debug'
 import { MCP23017 } from './mcp23017'
+import { IOExpander } from '../utils/ioExpander'
 
 interface Status {
   detected: boolean;
@@ -30,7 +31,7 @@ export class AS5600 {
 
   async readRawAngle(): Promise<number> {
     const buffer = Buffer.alloc(2)
-    await this.bus.readI2cBlock(this.address, 0x0C, 2, buffer)
+    await this.bus.readI2cBlockSync(this.address, 0x0C, 2, buffer)
     const rawAngle = (buffer[0] << 8) | buffer[1]
     this.debug('Read raw angle: %d', rawAngle)
     return rawAngle
@@ -38,7 +39,7 @@ export class AS5600 {
 
   async readAngle(): Promise<number> {
     const buffer = Buffer.alloc(2)
-    await this.bus.readI2cBlock(this.address, 0x0E, 2, buffer)
+    await this.bus.readI2cBlockSync(this.address, 0x0E, 2, buffer)
     const angle = (buffer[0] << 8) | buffer[1]
     this.debug('Read angle: %d', angle)
     return angle
@@ -56,14 +57,14 @@ export class AS5600 {
     };
   }
 
-  public async changeDirectionPin(pin: number, direction: boolean): Promise<void> {
+  public async changeDirectionPin(pin: IOExpander.PinNumber16, direction: boolean): Promise<void> {
     this.debug('Changing direction pin %d to %s', pin, direction ? 'HIGH' : 'LOW')
     await this.mcp23017.setPin(pin, direction)
   }
 
   private async getRawStatus(): Promise<number> {
     const buffer = Buffer.alloc(1)
-    await this.bus.readI2cBlock(this.address, 0x0B, 1, buffer)
+    await this.bus.readI2cBlockSync(this.address, 0x0B, 1, buffer)
     return buffer[0]
   }
 }
