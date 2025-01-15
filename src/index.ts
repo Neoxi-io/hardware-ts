@@ -6,6 +6,7 @@ export * as TCA9548A from './boards/tca9548a'
 export * as AS5600 from './boards/as5600'
 export * as A4988 from './boards/a4988'
 export * as DRV8825 from './boards/drv8825'
+export * as BME280 from './boards/bme280'
 
 export * as SGP30 from './sensors/sgp30'
 export * as SHT4X from './sensors/sht4x'

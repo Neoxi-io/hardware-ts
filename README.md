@@ -132,3 +132,43 @@ main().catch(console.error)
 - `setDirection(direction: boolean)`: Controls the direction signal of the stepper motor.
 - `enable()`: Enables the stepper motor.
 - `disable()`: Disables the stepper motor.
+
+## BME280 Sensor
+
+The BME280 is a combined digital humidity, pressure, and temperature sensor based on proven sensing principles. It is designed for low power consumption and high precision.
+
+### Usage
+
+To use the BME280 sensor, you need to create an instance of the `BME280` class and call its methods to read the sensor data.
+
+#### Example
+
+```typescript
+import { BME280 } from '@neoxi-io/hardware-ts'
+import { openPromisified } from 'i2c-bus'
+
+async function main() {
+  const bus = await openPromisified(1)
+  const sensor = new BME280(bus)
+
+  await sensor.init()
+
+  const temperature = await sensor.readTemperature()
+  console.log(`Temperature: ${temperature} °C`)
+
+  const pressure = await sensor.readPressure()
+  console.log(`Pressure: ${pressure} hPa`)
+
+  const humidity = await sensor.readHumidity()
+  console.log(`Humidity: ${humidity} %`)
+}
+
+main().catch(console.error)
+```
+
+### Methods
+
+- `init()`: Initializes the BME280 sensor.
+- `readTemperature()`: Reads the temperature value from the sensor.
+- `readPressure()`: Reads the pressure value from the sensor.
+- `readHumidity()`: Reads the humidity value from the sensor.
