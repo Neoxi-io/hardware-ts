@@ -6,6 +6,26 @@ export class BME280 {
   private address: number
   private debug: debugFactory.Debugger
 
+  private dig_T1: number
+  private dig_T2: number
+  private dig_T3: number
+  private t_fine: number
+  private dig_P1: number
+  private dig_P2: number
+  private dig_P3: number
+  private dig_P4: number
+  private dig_P5: number
+  private dig_P6: number
+  private dig_P7: number
+  private dig_P8: number
+  private dig_P9: number
+  private dig_H1: number
+  private dig_H2: number
+  private dig_H3: number
+  private dig_H4: number
+  private dig_H5: number
+  private dig_H6: number
+
   constructor(bus: I2CBus, address: number = 0x76, debug: boolean = false) {
     this.debug = debugFactory('BME280')
 
@@ -17,6 +37,26 @@ export class BME280 {
     if (debug) {
       debugFactory.enable('BME280')
     }
+
+    this.dig_T1 = 0
+    this.dig_T2 = 0
+    this.dig_T3 = 0
+    this.t_fine = 0
+    this.dig_P1 = 0
+    this.dig_P2 = 0
+    this.dig_P3 = 0
+    this.dig_P4 = 0
+    this.dig_P5 = 0
+    this.dig_P6 = 0
+    this.dig_P7 = 0
+    this.dig_P8 = 0
+    this.dig_P9 = 0
+    this.dig_H1 = 0
+    this.dig_H2 = 0
+    this.dig_H3 = 0
+    this.dig_H4 = 0
+    this.dig_H5 = 0
+    this.dig_H6 = 0
   }
 
   async init() {
@@ -24,6 +64,28 @@ export class BME280 {
     await this.writeRegister(0xF2, 0x01) // Humidity oversampling x1
     await this.writeRegister(0xF4, 0x27) // Pressure and temperature oversampling x1, mode normal
     await this.writeRegister(0xF5, 0xA0) // Standby time 1000ms, filter off
+
+    const calib = await this.readRegisters(0x88, 26)
+    this.dig_T1 = calib.readUInt16LE(0)
+    this.dig_T2 = calib.readInt16LE(2)
+    this.dig_T3 = calib.readInt16LE(4)
+    this.dig_P1 = calib.readUInt16LE(6)
+    this.dig_P2 = calib.readInt16LE(8)
+    this.dig_P3 = calib.readInt16LE(10)
+    this.dig_P4 = calib.readInt16LE(12)
+    this.dig_P5 = calib.readInt16LE(14)
+    this.dig_P6 = calib.readInt16LE(16)
+    this.dig_P7 = calib.readInt16LE(18)
+    this.dig_P8 = calib.readInt16LE(20)
+    this.dig_P9 = calib.readInt16LE(22)
+    this.dig_H1 = calib.readUInt8(25)
+
+    const calib2 = await this.readRegisters(0xE1, 7)
+    this.dig_H2 = calib2.readInt16LE(0)
+    this.dig_H3 = calib2.readUInt8(2)
+    this.dig_H4 = (calib2.readInt8(3) << 4) | (calib2.readUInt8(4) & 0x0F)
+    this.dig_H5 = (calib2.readInt8(5) << 4) | (calib2.readUInt8(4) >> 4)
+    this.dig_H6 = calib2.readInt8(6)
   }
 
   async readTemperature(): Promise<number> {
@@ -32,8 +94,8 @@ export class BME280 {
     const adc_T = (data[0] << 12) | (data[1] << 4) | (data[2] >> 4)
     const var1 = (((adc_T >> 3) - (this.dig_T1 << 1)) * this.dig_T2) >> 11
     const var2 = (((((adc_T >> 4) - this.dig_T1) * ((adc_T >> 4) - this.dig_T1)) >> 12) * this.dig_T3) >> 14
-    const t_fine = var1 + var2
-    const T = (t_fine * 5 + 128) >> 8
+    this.t_fine = var1 + var2
+    const T = (this.t_fine * 5 + 128) >> 8
     return T / 100
   }
 
