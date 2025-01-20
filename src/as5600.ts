@@ -1,70 +1,67 @@
-import { I2CBus } from 'i2c-bus'
-import debugFactory from 'debug'
-import { MCP23017 } from './mcp23017'
-import { IOExpander } from './utils/ioExpander'
+// AS5600 : 12-Bit Programmable Contactless Potentiometer
+// driver for WebI2C
+// Programmed by Satoru Takagi
+// 
+// https://ams.com/documents/20143/36005/AS5600_DS000365_5-00.pdf
+// https://qiita.com/GANTZ/items/63a66161a5a7eeaf6a62
+//
+
+import { I2CBus } from "i2c-bus";
+
+const ADDRESS = 0x36
 
 interface Status {
-  detected: boolean
-  tooLow: boolean
-  tooHigh: boolean
+  detected: boolean;
+  tooLow: boolean;
+  tooHigh: boolean;
 }
 
 export class AS5600 {
-  private bus: I2CBus
+
+  private i2cBus: I2CBus
   private address: number
-  private debug: debugFactory.Debugger
-  private mcp23017: MCP23017
 
-  constructor(bus: I2CBus, address: number = 0x36, mcp23017: MCP23017, debug: boolean = false) {
-    this.debug = debugFactory('AS5600')
-
-    this.bus = bus
+  constructor(bus: I2CBus, address: number = 0x36) {
+    this.i2cBus = bus
     this.address = address
-    this.mcp23017 = mcp23017
-
-    if (debug) {
-      debugFactory.enable('AS5600')
-    }
-
-    this.debug('Initializing AS5600 with address %x, bus %d', address, bus)
   }
 
-  async readRawAngle(): Promise<number> {
-    const buffer = Buffer.alloc(2)
-    await this.bus.readI2cBlockSync(this.address, 0x0c, 2, buffer)
-    const rawAngle = (buffer[0] << 8) | buffer[1]
-    this.debug('Read raw angle: %d', rawAngle)
-    return rawAngle
+  private sleep(ms: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
-  async readAngle(): Promise<number> {
-    const buffer = Buffer.alloc(2)
-    await this.bus.readI2cBlockSync(this.address, 0x0e, 2, buffer)
-    const angle = (buffer[0] << 8) | buffer[1]
-    this.debug('Read angle: %d', angle)
-    return angle
+  public async init(): Promise<void> {
+    // Ensure the bus is open before attempting to communicate
+    await this.i2cBus.i2cFuncsSync();
+  }
+
+  public async getRawStatus(): Promise<number> {
+    const status = await this.i2cBus.readByteSync(this.address, 0x0b);
+    return status;
   }
 
   public async getStatus(): Promise<Status> {
-    const rstat = await this.getRawStatus()
-    const mh = (rstat >> 3) & 1
-    const ml = (rstat >> 4) & 1
-    const md = (rstat >> 5) & 1
+    const rstat = await this.getRawStatus();
+    const mh = (rstat >> 3) & 1;
+    const ml = (rstat >> 4) & 1;
+    const md = (rstat >> 5) & 1;
     return {
       detected: Boolean(md),
       tooLow: Boolean(ml),
       tooHigh: Boolean(mh),
-    }
+    };
   }
 
-  public async changeDirectionPin(pin: IOExpander.PinNumber16, direction: boolean): Promise<void> {
-    this.debug('Changing direction pin %d to %s', pin, direction ? 'HIGH' : 'LOW')
-    await this.mcp23017.setPin(pin, direction)
+  public async getRawAngle(): Promise<number> {
+    const buffer = Buffer.alloc(2);
+    await this.i2cBus.readI2cBlockSync(this.address, 0x0c, 2, buffer);
+    const angle = (buffer[0] << 8) | buffer[1];
+    return angle;
   }
 
-  private async getRawStatus(): Promise<number> {
-    const buffer = Buffer.alloc(1)
-    await this.bus.readI2cBlockSync(this.address, 0x0b, 1, buffer)
-    return buffer[0]
+  public async getAngle(): Promise<number> {
+    const rawAngle = await this.getRawAngle();
+    const angle = (360 * rawAngle) / 4096;
+    return angle;
   }
 }

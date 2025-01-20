@@ -1,22 +1,22 @@
 import debugFactory from 'debug'
-import { Actuator, ActuatorDirection } from './actuator';
-import { AS5600 } from './AS5600';
+import { DRV8825, ActuatorDirection } from './drv8825';
+import { AS5600 } from './as5600';
 
 
 export class Gantry {
 
-    private stepper: Actuator
+    private stepper: DRV8825
     private encoder: AS5600
     private debug: debugFactory.Debugger
     private currentPos: number = 0 // in number of rotations, ie: how many times the encoder has rotated from the home position
     private registeredPositions: number[] = []
-    private interval: NodeJS.Timeout
+    private interval: NodeJS.Timeout | undefined
     private minPosition: number = 0
     private maxPosition: number = 0
     private tolerance: number = 0.1
     private homePosition: number = 0
 
-    constructor(stepper: Actuator, encoder: AS5600, debug: boolean = false) {
+    constructor(stepper: DRV8825, encoder: AS5600, debug: boolean = false) {
         this.debug = debugFactory('gantry')
         this.stepper = stepper
         this.encoder = encoder
