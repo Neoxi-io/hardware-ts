@@ -1,3 +1,11 @@
+## [1.2.1](https://github.com/Neoxi-io/hardware-ts/compare/v1.2.0...v1.2.1) (2025-01-20)
+
+
+### Bug Fixes
+
+* **Gantry:** added the new gantry class ([4f60d1a](https://github.com/Neoxi-io/hardware-ts/commit/4f60d1aba4e6cf552b0d58c878b846d982a248e9))
+* **Gantry:** various ([94e310d](https://github.com/Neoxi-io/hardware-ts/commit/94e310d9b1b3a3e97ff51ce53defd1c5ac5b3c7f))
+
 # [1.2.0](https://github.com/Neoxi-io/hardware-ts/compare/v1.1.0...v1.2.0) (2025-01-15)
 
 
