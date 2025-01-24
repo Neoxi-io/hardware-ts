@@ -14,13 +14,19 @@ export class AS5600 {
   private address: number
   private debug: debugFactory.Debugger
   private mcp23017: MCP23017
+  private angleID: string
+  private magnetStatusID: string
+  private magnitudeID: string
 
-  constructor(bus: I2CBus, address: number = 0x36, mcp23017: MCP23017, debug: boolean = false) {
+  constructor(bus: I2CBus, address: number = 0x36, mcp23017: MCP23017, angleID: string, magnetStatusID: string, magnitudeID: string, debug: boolean = false) {
     this.debug = debugFactory('AS5600')
 
     this.bus = bus
     this.address = address
     this.mcp23017 = mcp23017
+    this.angleID = angleID
+    this.magnetStatusID = magnetStatusID
+    this.magnitudeID = magnitudeID
 
     if (debug) {
       debugFactory.enable('AS5600')
@@ -29,20 +35,20 @@ export class AS5600 {
     this.debug('Initializing AS5600 with address %x, bus %d', address, bus)
   }
 
-  async readRawAngle(): Promise<number> {
+  async readRawAngle(): Promise<{ [key: string]: number }> {
     const buffer = Buffer.alloc(2)
     await this.bus.readI2cBlockSync(this.address, 0x0c, 2, buffer)
     const rawAngle = (buffer[0] << 8) | buffer[1]
     this.debug('Read raw angle: %d', rawAngle)
-    return rawAngle
+    return { [this.angleID]: rawAngle }
   }
 
-  async readAngle(): Promise<number> {
+  async readAngle(): Promise<{ [key: string]: number }> {
     const buffer = Buffer.alloc(2)
     await this.bus.readI2cBlockSync(this.address, 0x0e, 2, buffer)
     const angle = (buffer[0] << 8) | buffer[1]
     this.debug('Read angle: %d', angle)
-    return angle
+    return { [this.angleID]: angle }
   }
 
   public async getStatus(): Promise<Status> {

@@ -26,13 +26,20 @@ export class BME280 {
   private dig_H5: number
   private dig_H6: number
 
-  constructor(bus: I2CBus, address: number = 0x76, debug: boolean = false) {
+  private tempID: string
+  private pressureID: string
+  private humidityID: string
+
+  constructor(bus: I2CBus, address: number = 0x76, tempID: string, pressureID: string, humidityID: string, debug: boolean = false) {
     this.debug = debugFactory('BME280')
 
     this.debug('Initializing BME280 with address %x, bus %d', address, bus)
 
     this.bus = bus
     this.address = address
+    this.tempID = tempID
+    this.pressureID = pressureID
+    this.humidityID = humidityID
 
     if (debug) {
       debugFactory.enable('BME280')
@@ -88,7 +95,7 @@ export class BME280 {
     this.dig_H6 = calib2.readInt8(6)
   }
 
-  async readTemperature(): Promise<number> {
+  async readTemperature(): Promise<{ [key: string]: number }> {
     this.debug('Reading temperature from BME280 sensor')
     const data = await this.readRegisters(0xfa, 3)
     const adc_T = (data[0] << 12) | (data[1] << 4) | (data[2] >> 4)
@@ -96,10 +103,10 @@ export class BME280 {
     const var2 = (((((adc_T >> 4) - this.dig_T1) * ((adc_T >> 4) - this.dig_T1)) >> 12) * this.dig_T3) >> 14
     this.t_fine = var1 + var2
     const T = (this.t_fine * 5 + 128) >> 8
-    return T / 100
+    return { [this.tempID]: T / 100 }
   }
 
-  async readPressure(): Promise<number> {
+  async readPressure(): Promise<{ [key: string]: number }> {
     this.debug('Reading pressure from BME280 sensor')
     const data = await this.readRegisters(0xf7, 3)
     const adc_P = (data[0] << 12) | (data[1] << 4) | (data[2] >> 4)
@@ -114,10 +121,10 @@ export class BME280 {
     const var9 = ((this.dig_P9 * ((var8 >> 3) * (var8 >> 3))) >> 13) >> 12
     const var10 = ((var8 >> 2) * this.dig_P8) >> 13
     const P = var8 + ((var9 + var10 + this.dig_P7) >> 4)
-    return P / 100
+    return { [this.pressureID]: P / 100 }
   }
 
-  async readHumidity(): Promise<number> {
+  async readHumidity(): Promise<{ [key: string]: number }> {
     this.debug('Reading humidity from BME280 sensor')
     const data = await this.readRegisters(0xfd, 2)
     const adc_H = (data[0] << 8) | data[1]
@@ -126,7 +133,7 @@ export class BME280 {
     const var3 = var2 * (((((((var1 * this.dig_H6) >> 10) * (((var1 * this.dig_H3) >> 11) + 32768)) >> 10) + 2097152) * this.dig_H2 + 8192) >> 14)
     const var4 = var3 - (((((var3 >> 15) * (var3 >> 15)) >> 7) * this.dig_H1) >> 4)
     const H = (var4 < 0 ? 0 : var4 > 419430400 ? 419430400 : var4) >> 12
-    return H / 1024
+    return { [this.humidityID]: H / 1024 }
   }
 
   private async writeRegister(register: number, value: number) {

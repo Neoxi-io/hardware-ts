@@ -8,13 +8,19 @@ export class DRV8825 {
   private stepPin: IOExpander.PinNumber16
   private dirPin: IOExpander.PinNumber16
   private enablePin: IOExpander.PinNumber16
+  private stepID: string
+  private dirID: string
+  private enableID: string
 
-  constructor(gpio: MCP23017, pwm: PCA9685, stepPin: IOExpander.PinNumber16, dirPin: IOExpander.PinNumber16, enablePin: IOExpander.PinNumber16) {
+  constructor(gpio: MCP23017, pwm: PCA9685, stepPin: IOExpander.PinNumber16, dirPin: IOExpander.PinNumber16, enablePin: IOExpander.PinNumber16, stepID: string, dirID: string, enableID: string) {
     this.gpio = gpio
     this.pwm = pwm
     this.stepPin = stepPin
     this.dirPin = dirPin
     this.enablePin = enablePin
+    this.stepID = stepID
+    this.dirID = dirID
+    this.enableID = enableID
 
     this.gpio.outputPin(this.stepPin, false)
     this.gpio.outputPin(this.dirPin, false)
@@ -23,14 +29,17 @@ export class DRV8825 {
 
   async setDirection(direction: boolean) {
     await this.gpio.setPin(this.dirPin, direction)
+    return { [this.dirID]: direction }
   }
 
   async enable() {
     await this.gpio.setPin(this.enablePin, false)
+    return { [this.enableID]: true }
   }
 
   async disable() {
     await this.gpio.setPin(this.enablePin, true)
+    return { [this.enableID]: false }
   }
 
   async move(steps: number, direction: boolean, speed: number) {
@@ -46,5 +55,6 @@ export class DRV8825 {
     }
 
     await this.disable()
+    return { [this.stepID]: steps }
   }
 }

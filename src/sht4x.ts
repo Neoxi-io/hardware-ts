@@ -30,8 +30,10 @@ export default class SHT4X {
   private readonly address: number
   private debug: debugFactory.Debugger
   private mode: string
+  private tempID: string
+  private humidityID: string
 
-  constructor(bus: I2CBus, address = _SHT4X_DEFAULT_ADDR, debug: boolean = false) {
+  constructor(bus: I2CBus, address = _SHT4X_DEFAULT_ADDR, tempID: string, humidityID: string, debug: boolean = false) {
     this.debug = debugFactory('SHT4X')
 
     this.debug('Initializing SHT4X with address %x, bus %d', address, bus)
@@ -39,6 +41,8 @@ export default class SHT4X {
     this.bus = bus
     this.address = address
     this.mode = 'NOHEAT_HIGHPRECISION'
+    this.tempID = tempID
+    this.humidityID = humidityID
 
     if (debug) {
       debugFactory.enable('SHT4X')
@@ -89,13 +93,13 @@ export default class SHT4X {
   async relativeHumidity() {
     this.debug('Reading SHT4X relative humidity')
     const measurement = await this.measurements()
-    return measurement.humidity
+    return measurement[this.humidityID]
   }
 
   async temperature() {
     this.debug('Reading SHT4X temperature')
     const measurement = await this.measurements()
-    return measurement.temperature
+    return measurement[this.tempID]
   }
 
   async measurements() {
@@ -127,8 +131,8 @@ export default class SHT4X {
     humidity = Math.max(Math.min(humidity, 100), 0)
 
     return {
-      humidity,
-      temperature: temperature_c,
+      [this.humidityID]: humidity,
+      [this.tempID]: temperature_c,
     }
   }
 }

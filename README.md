@@ -149,7 +149,7 @@ import { openPromisified } from 'i2c-bus'
 
 async function main() {
   const bus = await openPromisified(1)
-  const sensor = new BME280(bus)
+  const sensor = new BME280(bus, 'tempID', 'pressureID', 'humidityID')
 
   await sensor.init()
 
@@ -172,3 +172,77 @@ main().catch(console.error)
 - `readTemperature()`: Reads the temperature value from the sensor.
 - `readPressure()`: Reads the pressure value from the sensor.
 - `readHumidity()`: Reads the humidity value from the sensor.
+
+## SHT4X Sensor
+
+The SHT4X is a digital temperature and humidity sensor with high accuracy and low power consumption.
+
+### Usage
+
+To use the SHT4X sensor, you need to create an instance of the `SHT4X` class and call its methods to read the sensor data.
+
+#### Example
+
+```typescript
+import { SHT4X } from '@neoxi-io/hardware-ts'
+import { openPromisified } from 'i2c-bus'
+
+async function main() {
+  const bus = await openPromisified(1)
+  const sensor = new SHT4X(bus, 'tempID', 'humidityID')
+
+  const temperature = await sensor.temperature()
+  console.log(`Temperature: ${temperature} °C`)
+
+  const humidity = await sensor.relativeHumidity()
+  console.log(`Humidity: ${humidity} %`)
+}
+
+main().catch(console.error)
+```
+
+### Methods
+
+- `temperature()`: Reads the temperature value from the sensor.
+- `relativeHumidity()`: Reads the relative humidity value from the sensor.
+
+## SGP30 Sensor
+
+The SGP30 is a digital gas sensor for indoor air quality monitoring.
+
+### Usage
+
+To use the SGP30 sensor, you need to create an instance of the `SGP30` class and call its methods to read the sensor data.
+
+#### Example
+
+```typescript
+import { SGP30 } from '@neoxi-io/hardware-ts'
+import { openPromisified } from 'i2c-bus'
+
+async function main() {
+  const bus = await openPromisified(1)
+  const sensor = new SGP30(bus, 'tvocID', 'eco2ID', 'ethanolID', 'hydrogenID', 'airQualityID')
+
+  sensor.start()
+
+  setInterval(() => {
+    const data = sensor.get()
+    console.log(`TVOC: ${data.tvocID} ppb`)
+    console.log(`eCO2: ${data.eco2ID} ppm`)
+    console.log(`Ethanol: ${data.ethanolID} ppm`)
+    console.log(`Hydrogen: ${data.hydrogenID} ppm`)
+    console.log(`Air Quality: ${data.airQualityID}`)
+  }, 1000)
+}
+
+main().catch(console.error)
+```
+
+### Methods
+
+- `start()`: Starts the sensor measurements.
+- `stop()`: Stops the sensor measurements.
+- `get()`: Returns the sensor data.
+- `stop()`: Stops the sensor measurements.
+- `get()`: Returns the sensor data.

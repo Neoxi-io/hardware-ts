@@ -13,14 +13,24 @@ class SGP30 {
   private data: number[] = [0, 0, 0, 0, 0]
   private measureIAQInterval: NodeJS.Timeout | null = null
   private readonly debug: debugFactory.Debugger
+  private tvocID: string
+  private eco2ID: string
+  private ethanolID: string
+  private hydrogenID: string
+  private airQualityID: string
 
-  constructor(bus: I2CBus, address: number = 0x58, debug: boolean = false) {
+  constructor(bus: I2CBus, address: number = 0x58, tvocID: string, eco2ID: string, ethanolID: string, hydrogenID: string, airQualityID: string, debug: boolean = false) {
     this.debug = debugFactory('SGP30')
 
     this.debug('Initializing SGP30 with address %x, bus %d', address, bus)
 
     this.bus = bus
     this.address = address
+    this.tvocID = tvocID
+    this.eco2ID = eco2ID
+    this.ethanolID = ethanolID
+    this.hydrogenID = hydrogenID
+    this.airQualityID = airQualityID
 
     if (debug) {
       debugFactory.enable('SGP30')
@@ -94,19 +104,15 @@ class SGP30 {
   }
 
   get(): {
-    tvoc: number
-    eco2: number
-    ethanol: number
-    hydrogen: number
-    overall_air_quality: number
+    [key: string]: number
   } {
     this.debug('Getting SGP30 sensor data')
     return {
-      tvoc: this.data[0],
-      eco2: this.data[1],
-      ethanol: this.data[2],
-      hydrogen: this.data[3],
-      overall_air_quality: this.data[4],
+      [this.tvocID]: this.data[0],
+      [this.eco2ID]: this.data[1],
+      [this.ethanolID]: this.data[2],
+      [this.hydrogenID]: this.data[3],
+      [this.airQualityID]: this.data[4],
     }
   }
 }
